@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+model User {
+  id                String            @id @default(uuid())
+  username          String
+  email             String            @unique
+  password          String
+  first_name        String?
+  last_name         String?
+  avatar_name       String?
+  banner_image_name String?
+  activation_token  String?
+  is_active         Boolean           @default(false)
+  gdpr_date         DateTime          @default(now())
+  created_at        DateTime          @default(now())
+  updated_at        DateTime          @updatedAt
+  role              RoleUser
+  follower          User_has_Follow[] @relation("follower")
+  followed          User_has_Follow[] @relation("followed")
+}
+
+enum RoleUser {
+  ADMIN
+  MODERATION
+  USER
+}
+
+model User_has_Follow {
+  id          String   @id @default(uuid())
+  follower_id String
+  user_id     String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  followed    User     @relation(name: "followed", fields: [user_id], references: [id])
+  follower    User     @relation(name: "follower", fields: [follower_id], references: [id])
+}
+
+// model Avatar {
+//   id           String   @id @default(uuid())
+//   display_name String
+//   file_name    String
+//   created_at   DateTime @default(now())
+//   updated_at   DateTime @updatedAt
+// }
+
+// model Banner {
+//   id           String   @id @default(uuid())
+//   display_name String
+//   file_name    String
+//   created_at   DateTime @default(now())
+//   updated_at   DateTime @updatedAt
+// }
