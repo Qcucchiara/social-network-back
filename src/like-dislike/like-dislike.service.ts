@@ -1,13 +1,25 @@
-import { Injectable } from '@nestjs/common';
-import { LikeDislikeDto } from './dto/create-like-dislike.dto';
+import { Injectable } from "@nestjs/common";
+
+export type LikeDislike = "like" | "dislike";
 
 @Injectable()
 export class LikeDislikeService {
-  add(dto: LikeDislikeDto, userId: string, postId: string) {
-    return 'check if a like or dislike already exist, if one in the opposite column already exist, remove it and add it in the other. else do nothing.';
+  create(publicationId: LikeDislike, postId: string) {
+    try {
+      switch (publicationId) {
+        case "like":
+          return;
+
+        case "dislike":
+          return;
+
+        default:
+          break;
+      }
+    } catch (error) {}
   }
 
-  remove(userId: string, postId: string) {
+  remove(postId: string) {
     return `remove the userId in the 2 columns if it exist. else do nothing`;
   }
 }

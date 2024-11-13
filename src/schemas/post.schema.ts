@@ -1,12 +1,12 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { HydratedDocument } from "mongoose";
 
 export type PostDocument = HydratedDocument<Post>;
 
 enum PostStatus {
-  VISIBLE = 'VISIBLE',
-  SUSPECT = 'SUSPECT',
-  HIDDEN = 'HIDDEN',
+  VISIBLE = "VISIBLE",
+  SUSPECT = "SUSPECT",
+  HIDDEN = "HIDDEN",
 }
 
 @Schema({ timestamps: true })

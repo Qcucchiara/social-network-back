@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { PrismaClient } from '@prisma/client';
+import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { PrismaClient } from "@prisma/client";
 
 @Injectable()
 export class PrismaService extends PrismaClient {
@@ -8,7 +8,9 @@ export class PrismaService extends PrismaClient {
     super({
       datasources: {
         db: {
-          url: config.get('POSTGRES_URL'),
+          url: config.get("POSTGRES_URL"),
+          // url: process.env.POSTGRES_URL,
+          // url: "postgresql://social_network_backend:randompassword1@localhost:5432/social_network_user?schema=public",
         },
       },
     });

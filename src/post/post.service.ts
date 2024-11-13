@@ -4,12 +4,11 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import { CreatePostDto } from "./dto/create-post.dto";
-import { UpdatePostDto } from "./dto/update-post.dto";
+import { UpdatePublicationDto } from "./dto/update-post.dto";
 import { CreateCommentDto } from "./dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { Post } from "src/schemas/post.schema";
 import { Model, Types } from "mongoose";
-import { $Enums } from "@prisma/client";
 
 @Injectable()
 export class PostService {
@@ -30,7 +29,7 @@ export class PostService {
     try {
       const parentPost = await this.postModel.findById(dto.parent_id).exec();
       if (parentPost == null || undefined) {
-        throw new UnauthorizedException("the parent Post doest not exist");
+        throw new UnauthorizedException("the parent Post does not exist");
       }
       const newComment = new this.postModel(dto);
       const createdComment = newComment.save();
@@ -56,8 +55,6 @@ export class PostService {
               },
               likeCount: { $size: "$user_has_liked" },
               dislikeCount: { $size: "$user_has_disliked" },
-              // isLiked: { $in: [userId, "$user_has_liked"] },
-              // isDisliked: { $in: [userId, "$user_has_disliked"] },
             },
           },
           { $sort: { likesDislikesCount: -1 } },
@@ -155,7 +152,7 @@ export class PostService {
     }
   }
 
-  async update(id: string, dto: UpdatePostDto) {
+  async update(id: string, dto: UpdatePublicationDto) {
     try {
       const updatedPost = await this.postModel
         .findByIdAndUpdate(id, dto, {

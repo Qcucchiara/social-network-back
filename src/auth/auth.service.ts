@@ -1,10 +1,10 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import * as argon from 'argon2';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
-import { RoleUser } from '@prisma/client';
-import { SigninDto, SignupDto } from './dto';
+import { ForbiddenException, Injectable } from "@nestjs/common";
+import { PrismaService } from "src/prisma/prisma.service";
+import * as argon from "argon2";
+import { JwtService } from "@nestjs/jwt";
+import { ConfigService } from "@nestjs/config";
+import { RoleUser } from "@prisma/client";
+import { SigninDto, SignupDto } from "./dto";
 
 @Injectable()
 export class AuthService {
@@ -20,7 +20,7 @@ export class AuthService {
       },
     });
     if (exisingUser) {
-      throw new ForbiddenException('Email already taken');
+      throw new ForbiddenException("Email already taken");
     }
 
     const hash = await argon.hash(dto.password);
@@ -45,12 +45,12 @@ export class AuthService {
       },
     });
     if (!user) {
-      throw new ForbiddenException('Invalid crendentials');
+      throw new ForbiddenException("Invalid crendentials");
     }
 
     const isValidPassword = await argon.verify(user.password, dto.password);
     if (!isValidPassword) {
-      throw new ForbiddenException('Invalid crendentials');
+      throw new ForbiddenException("Invalid crendentials");
     }
     return this.signToken(user.id);
   }
@@ -60,9 +60,9 @@ export class AuthService {
       sub: userId,
     };
 
-    const secret = this.config.get('JWT_SECRET');
+    const secret = this.config.get("JWT_SECRET");
     const token = await this.jwt.signAsync(payload, {
-      expiresIn: '7d',
+      expiresIn: "7d",
       secret: secret,
     });
 

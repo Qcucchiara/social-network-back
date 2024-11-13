@@ -1,30 +1,20 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
-import { LikeDislikeService } from './like-dislike.service';
-import { LikeDislikeDto } from './dto/create-like-dislike.dto';
+import { Controller, Post, Param, Delete } from "@nestjs/common";
+import { LikeDislike, LikeDislikeService } from "./like-dislike.service";
 
-@Controller('like-dislike')
+@Controller("like-dislike")
 export class LikeDislikeController {
   constructor(private readonly likeDislikeService: LikeDislikeService) {}
 
-  @Post(':user_id/:post_id')
-  add(
-    @Body() likeDislikeDto: LikeDislikeDto,
-    @Param('user_id') userId: string,
-    @Param('user_id') postId: string,
+  @Post(":publication_id/:is_liked")
+  create(
+    @Param("publication_id") publicationsId: string,
+    @Param("is_liked") isLiked: LikeDislike,
   ) {
-    return this.likeDislikeService.add(likeDislikeDto, userId, postId);
+    return this.likeDislikeService.create(isLiked, publicationsId);
   }
 
-  @Delete(':id')
-  remove(@Param('user_id') userId: string, @Param('user_id') postId: string) {
-    return this.likeDislikeService.remove(userId, postId);
+  @Delete(":publication_id")
+  remove(@Param("publication_id") publicationsId: string) {
+    return this.likeDislikeService.remove(publicationsId);
   }
 }

@@ -7,10 +7,11 @@ import { AuthModule } from "./auth/auth.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { FollowModule } from "./follow/follow.module";
 import { ConfigModule } from "@nestjs/config";
+import { TagModule } from './tag/tag.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: "../.env",
+      envFilePath: "./../.env",
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.MONGO_URL),
@@ -20,6 +21,7 @@ import { ConfigModule } from "@nestjs/config";
     AuthModule,
     PrismaModule,
     FollowModule,
+    TagModule,
   ],
 })
 export class AppModule {}
