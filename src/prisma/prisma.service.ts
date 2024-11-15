@@ -5,12 +5,11 @@ import { PrismaClient } from "@prisma/client";
 @Injectable()
 export class PrismaService extends PrismaClient {
   constructor(config: ConfigService) {
+    // console.log(config.get("POSTGRES_URL"));
     super({
       datasources: {
         db: {
           url: config.get("POSTGRES_URL"),
-          // url: process.env.POSTGRES_URL,
-          // url: "postgresql://social_network_backend:randompassword1@localhost:5432/social_network_user?schema=public",
         },
       },
     });

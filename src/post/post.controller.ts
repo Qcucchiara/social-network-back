@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Query,
+  HttpCode,
 } from "@nestjs/common";
 import { PostService } from "./post.service";
 import { CreatePostDto } from "./dto/create-post.dto";
@@ -15,30 +16,60 @@ import { CreateCommentDto, UpdatePublicationDto } from "./dto";
 // import { GetUser } from "src/auth/decorator";
 import { JwtGuard } from "src/auth/guards";
 import { GetPostDto } from "./dto/get-post.dto";
-import { GetCommentDto } from "./dto/get-comment.dto";
+import { GetUser } from "src/auth/decorator";
 
-@UseGuards(JwtGuard)
+const sortPublication = ["date", "popularity"] as const;
+export type SortPublication = (typeof sortPublication)[number];
+
+// @UseGuards(JwtGuard)
 @Controller("publication")
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
-  @Post()
-  create(@Body() createPostDto: CreatePostDto) {}
+  @Post("/post")
+  createPost(@Body() dto: CreatePostDto, @GetUser("sub") authorId: string) {
+    return this.postService.createPost(dto, authorId);
+  }
 
-  @Get("/post")
-  postList(@Query() query: GetPostDto) {}
+  @Post("/comment")
+  createComment(@Body() dto: CreateCommentDto) {
+    return this.postService.createComment(dto);
+  }
 
-  @Get("/comment")
-  commentList(@Query() query: GetCommentDto) {}
+  @HttpCode(200)
+  @Post("/post/:skip/:take/:sort")
+  getPosts(
+    @Body() dto: GetPostDto,
+    @Param("skip") skip: number,
+    @Param("take") take: number,
+    @Param("sort") sort: SortPublication,
+  ) {
+    return this.postService.getPosts(dto, skip, take, sort);
+  }
+
+  @HttpCode(200)
+  @Post("/comment/:post_id/:skip/:take/:sort")
+  getComments(
+    @Param("sort") sort: SortPublication,
+    @Param("post_id") postId: string,
+    @Param("skip") skip: number,
+    @Param("take") take: number,
+  ) {
+    return this.postService.getComments(sort, postId, skip, take);
+  }
 
   @Patch(":publication_id")
   updatePublication(
-    @Body() dot: UpdatePublicationDto,
+    @Body() dto: UpdatePublicationDto,
     @Param("publication_id") publicationId: string,
-  ) {}
+  ) {
+    return this.postService.updatePublication(publicationId, dto);
+  }
 
   @Delete(":publication_id")
-  deletePublication(@Param("publication_id") publicationId: string) {}
+  deletePublication(@Param("publication_id") publicationId: string) {
+    return this.postService.deletePublication(publicationId);
+  }
 
   // _________________________________________________________________
   // @Post("/post")

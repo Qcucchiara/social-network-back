@@ -32,6 +32,14 @@ CREATE TABLE "User_has_Follow" (
     CONSTRAINT "User_has_Follow_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "tag" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+
+    CONSTRAINT "tag_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 

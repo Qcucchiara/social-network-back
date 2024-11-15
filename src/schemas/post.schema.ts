@@ -15,7 +15,7 @@ export class Post {
   parent_id: string;
 
   @Prop({ type: String })
-  author_id: number;
+  author_id: string;
 
   @Prop({ type: String })
   content: string;
@@ -30,8 +30,14 @@ export class Post {
   @Prop({ type: [String], default: [] })
   user_has_liked: string[];
 
+  @Prop({ type: Number, default: 0 })
+  like_count: number;
+
   @Prop({ type: [String], default: [] })
   user_has_disliked: string[];
+
+  @Prop({ type: Number, default: 0 })
+  dislike_count: number;
 
   @Prop({ type: String })
   post_title: string;

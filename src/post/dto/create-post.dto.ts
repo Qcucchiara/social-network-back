@@ -5,13 +5,9 @@ import {
   IsString,
   IsUUID,
   MaxLength,
-} from 'class-validator';
+} from "class-validator";
 
 export class CreatePostDto {
-  @IsNotEmpty()
-  // @IsUUID()
-  author_id: string;
-
   @IsNotEmpty()
   @IsString()
   @MaxLength(2000)
@@ -22,5 +18,8 @@ export class CreatePostDto {
   @MaxLength(30)
   post_title: string;
 
-  // post_list_tags: string[];
+  @IsOptional()
+  @IsString({ each: true })
+  @MaxLength(30)
+  post_list_tags: string[];
 }

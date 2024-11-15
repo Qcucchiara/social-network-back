@@ -2,13 +2,9 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { ValidationPipe } from "@nestjs/common";
 import { config } from "dotenv";
-import path from "path";
 
 async function bootstrap() {
-  let test = config({ path: "./../.env" });
-  console.log({ test });
-  console.log(process.env.POSTGRES_URL);
-  console.log(process.env.MONGO_URL);
+  config({ path: "./../.env" });
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   app.useGlobalPipes(

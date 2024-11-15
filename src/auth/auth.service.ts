@@ -35,7 +35,8 @@ export class AuthService {
         gdpr_date: new Date(),
       },
     });
-    return this.signToken(user.id);
+
+    return { token: this.signToken(user.id), message: "Connected" };
   }
 
   async signin(dto: SigninDto) {
@@ -52,10 +53,11 @@ export class AuthService {
     if (!isValidPassword) {
       throw new ForbiddenException("Invalid crendentials");
     }
-    return this.signToken(user.id);
+
+    return { token: await this.signToken(user.id), message: "Connected" };
   }
 
-  async signToken(userId: string): Promise<{ access_token: string }> {
+  private async signToken(userId: string): Promise<string> {
     const payload = {
       sub: userId,
     };
@@ -66,8 +68,6 @@ export class AuthService {
       secret: secret,
     });
 
-    return {
-      access_token: token,
-    };
+    return token;
   }
 }

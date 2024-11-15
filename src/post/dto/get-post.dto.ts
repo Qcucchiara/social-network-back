@@ -6,14 +6,9 @@ export type SortQuery = (typeof sortQuery)[number];
 export class GetPostDto {
   @IsOptional()
   @IsUUID("all", { each: true })
-  authorIds: string;
+  authorIds: string[];
 
   @IsOptional()
   @IsString({ each: true })
-  tags: string;
-
-  @IsOptional()
-  @IsString()
-  @IsIn(sortQuery)
-  sort: SortQuery;
+  tags: string[];
 }
